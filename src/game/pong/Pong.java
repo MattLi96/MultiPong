@@ -3,7 +3,8 @@ package game.pong;
 import java.util.*;
 
 import game.actions.Gameloop;
-import game.state.*;
+import game.state.State;
+import game.state.internalState.*;
 import game.utilities.Constants;
 
 /**
@@ -19,16 +20,36 @@ public class Pong {
 	 * Basically think of this as the players that will be included in the next game.
 	 */
 	private HashSet<String> players;
-	private State state; //The state of the current game
 	
+	// Container for the state and it's corresponding iState.
+	private class PongState{
+		final InternalState iState;
+		final State state;
+		
+		PongState(InternalState internalState){
+			iState = internalState;
+			state = new State(iState);
+		}
+	}
+	
+	private PongState pState; //The state of the current game
 	
 	/**
 	 * Initializes the Pong game. Does not start the game.
 	 */
 	public Pong(){
 		players = new HashSet<String>();
-		state = new State(new Polygon(players), new Ball(), new ControlState(players), new Score(players));
-		state.start(); state.finish();
+		pState = new PongState(
+				new InternalState(
+						new InternalPolygon(players), 
+						new InternalBall(), 
+						new InternalControlState(players), 
+						new InternalScore(players)));
+		pState.iState.start(); pState.iState.finish();
+	}
+	
+	public State getState(){
+		return pState.state;
 	}
 	
 	/**
@@ -36,18 +57,18 @@ public class Pong {
 	 * @param lives the number of lives each player starts with
 	 */
 	public synchronized void start(int lives){
-		if(state.started() && !state.finished()){ return; } //Game is already playing, let it continue to play.
+		if(pState.iState.started() && !pState.iState.finished()){ return; } //Game is already playing, let it continue to play.
 		
 		//create a new gamestate
-		Polygon f = new Polygon(players);
-		Ball b = new Ball();
-		ControlState c = new ControlState(players);
-		Score s = new Score(players, lives);
-		state = new State(f, b, c, s);
+		InternalPolygon f = new InternalPolygon(players);
+		InternalBall b = new InternalBall();
+		InternalControlState c = new InternalControlState(players);
+		InternalScore s = new InternalScore(players, lives);
+		pState = new PongState(new InternalState(f, b, c, s));
 		
 		//Actually start the game
-		state.start();
-		new Thread(new Gameloop(state)).start();
+		pState.iState.start();
+		new Thread(new Gameloop(pState.iState)).start();
 	}
 	
 	/**
@@ -58,10 +79,10 @@ public class Pong {
 	}
 	
 	/**
-	 * Ends the pong game. Does not immediately start again. Does not remove the players
+	 * Ends the pong game. Does not immediately start again. Does not remove the players. No winner is decided if you terminate this way
 	 */
 	public synchronized void end(){
-		state.finish();
+		pState.iState.finish();
 	}
 	
 	/**
@@ -83,8 +104,8 @@ public class Pong {
 	public synchronized void removePlayer(String player){
 		players.remove(player);
 		
-		if(state.started() && !state.finished()){
-			state.getField().removePlayer(player);
+		if(pState.iState.started() && !pState.iState.finished()){
+			pState.iState.getPolygon().removePlayer(player);
 		}
 	}
 	
@@ -92,21 +113,21 @@ public class Pong {
 	 * Sets the player's paddle to move to the left. Paddle will continue moving left until moveNone is called with the player.
 	 * @param player The player name
 	 */
-	public synchronized void moveLeft(String player){
-		state.getControls().setLeft(player);
+	public void moveLeft(String player){
+		pState.iState.getControls().setLeft(player);
 	}
 	
 	/**
 	 * Same as moveLeft, except moves the paddle to the right
 	 */
-	public synchronized void moveRight(String player){
-		state.getControls().setRight(player);
+	public void moveRight(String player){
+		pState.iState.getControls().setRight(player);
 	}
 	
 	/**
 	 * Sets the player's paddle to not move
 	 */
-	public synchronized void moveNone(String player){
-		state.getControls().setNone(player);
+	public void moveNone(String player){
+		pState.iState.getControls().setNone(player);
 	}
 }

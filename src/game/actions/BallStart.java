@@ -1,16 +1,16 @@
 package game.actions;
 
-import game.state.Ball;
+import game.state.internalState.InternalBall;
 import game.utilities.Constants;
 
 public class BallStart implements Runnable {
-	private final Ball ball;
+	private final InternalBall ball;
 	private final int startSleep;
 	
 	/**
 	 * @param startSleep Sleep before ball starts moving, measured in milisec
 	 */
-	public BallStart(Ball ball, int startSleep){
+	public BallStart(InternalBall ball, int startSleep){
 		this.ball = ball;
 		this.startSleep = startSleep;
 	}

@@ -1,8 +1,7 @@
 package game.utilities;
 
-import game.state.*;
+import game.state.internalState.*;
 
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 
@@ -57,12 +56,12 @@ public class PolygonUtilities {
     /**
      * @return find the closest player to the given point. Returns "" if there are no players
      */
-    public static String closestPlayer(Polygon poly, Point2D pt){
+    public static String closestPlayer(InternalPolygon poly, Point2D pt){
     	String ret = "";
     	double minDist = -1;
     	boolean minSet = false;
     	
-    	for(Side s: poly.getSides()){
+    	for(InternalSide s: poly.getSides()){
     		if(s.isPlayer()){
     			double dist = s.ptLineDist(pt);
     			

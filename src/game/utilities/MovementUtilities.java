@@ -3,7 +3,7 @@ package game.utilities;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-import game.state.*;
+import game.state.internalState.*;
 
 public class MovementUtilities {
 	/**
@@ -13,7 +13,7 @@ public class MovementUtilities {
 	 *            the ball.
 	 * @return next location of the ball
 	 */
-	public static Point2D getNextLocation(Ball ball) {
+	public static Point2D getNextLocation(InternalBall ball) {
 		double newX = Math.cos(ball.getDirection()) * ball.getSpeed()
 				+ ball.getLocation().getX();
 		double newY = -1.0 * Math.sin(ball.getDirection()) * ball.getSpeed()
@@ -26,7 +26,7 @@ public class MovementUtilities {
 	 * @param direction current direction of the ball
 	 * @return the new direction of the ball
 	 */
-	public static double bounceDirection(Side side, double direction) {
+	public static double bounceDirection(InternalSide side, double direction) {
 		// TODO add in spin and repeat bounce detection (so ball doesn't get trapped)
 
 		double rise = side.getY2() - side.getY1();
@@ -51,17 +51,17 @@ public class MovementUtilities {
 	 * {@code checkCollision}
 	 */
 	public static class CollisionInfo {
-		private Side side;
+		private InternalSide side;
 		private Line2D trajectory;
 		private Line2D wall;
 
-		public CollisionInfo(Side s, Line2D t, Line2D w) {
+		public CollisionInfo(InternalSide s, Line2D t, Line2D w) {
 			side = s;
 			trajectory = t;
 			wall = w;
 		}
 
-		public Side side() {
+		public InternalSide side() {
 			return side;
 		}
 
@@ -82,14 +82,14 @@ public class MovementUtilities {
 	 * @return null if there is no collision, otherwise information about the
 	 *         collision
 	 */
-	public static CollisionInfo checkCollision(Polygon poly, Ball ball,
+	public static CollisionInfo checkCollision(InternalPolygon poly, InternalBall ball,
 			Point2D nextLocation) {
 		// Check whether ball will next be outside of container.
 		if (!poly.contains(nextLocation)) {
 			// Find wall that intersects trajectory, if any.
 			Point2D location = ball.getLocation();
 			Line2D trajectory = new Line2D.Double(location, nextLocation);
-			for (Side side : poly.getSides()) {
+			for (InternalSide side : poly.getSides()) {
 				Line2D wall = side.isPlayer() ? side.adjustedPaddleLocation()
 						: side.paddleLocation();
 

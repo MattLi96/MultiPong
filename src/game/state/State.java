@@ -1,68 +1,35 @@
 package game.state;
 
+import game.state.internalState.InternalState;
+
 /**
- * Container for all the various aspects of a pong gamestate. This should be threadsafe
+ * This is the state of the game at a given moment. States are not immutable, however they are unmodifiable.
+ * Essentially they only expose the "get" functions of their respective internal component.
  * 
- * Once the class is created you cannot change the reference to the various objects (you can change their values).
- * Therefore you must create a new state for each game.
+ * These are focused on only providing the necessary information for the GUI
  * 
  * @author Matthew
  */
 public class State {
-	//All of these fields are threadsafe (and the objects they represent
 	private final Ball ball;
 	private final Score score;
-	private final Polygon field;
-	private final ControlState control;
-
-	private volatile boolean started;
-	private volatile boolean finished;
+	private final Polygon poly;
 	
-	public State(Polygon field, Ball ball, ControlState control, Score score){
-		this.field = field;
-		this.ball = ball;
-		this.control = control;
-		this.score = score;
-		
-		started = false;
-		finished = false;
-	}
-	
-	public Polygon getField(){
-		return field;
+	public State(InternalState state){
+		ball = new Ball(state.getBall());
+		poly = new Polygon(state.getPolygon());
+		score = new Score(state.getScores());
 	}
 	
 	public Ball getBall(){
 		return ball;
 	}
 	
-	public ControlState getControls(){
-		return control;
-	}
-	
-	public Score getScores(){
+	public Score getScore(){
 		return score;
 	}
 	
-	public boolean started(){
-		return started;
-	}
-	
-	/**
-	 * Sets started to true
-	 */
-	public void start(){
-		started = true;
-	}
-	
-	public boolean finished(){
-		return finished;
-	}
-	
-	/**
-	 * Sets finished to true
-	 */
-	public void finish(){
-		finished = true;
+	public Polygon getPolygon(){
+		return poly;
 	}
 }

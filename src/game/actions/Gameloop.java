@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import game.state.*;
+import game.state.internalState.*;
 import game.utilities.MovementUtilities;
 import game.utilities.PolygonUtilities;
 
@@ -14,21 +14,21 @@ import game.utilities.PolygonUtilities;
  * @author Matthew
  */
 public class Gameloop implements Runnable {
-	private State state;
+	private InternalState state;
 
 	// Some of the state fields, copied for ease of use
-	private final Ball ball;
-	private final Score score;
-	private final Polygon field;
-	private final ControlState control;
+	private final InternalBall ball;
+	private final InternalScore score;
+	private final InternalPolygon poly;
+	private final InternalControlState control;
 
 	private final RunBarrier barrier;
 
-	public Gameloop(State s) {
+	public Gameloop(InternalState s) {
 		state = s;
 		ball = s.getBall();
 		score = s.getScores();
-		field = s.getField();
+		poly = s.getPolygon();
 		control = s.getControls();
 
 		// Use a barrier with a timer for timing this loop
@@ -51,7 +51,7 @@ public class Gameloop implements Runnable {
 			barrier.await();
 
 			// Paddle movement
-			for (Side s : field.getSides()) {
+			for (InternalSide s : poly.getSides()) {
 				if (s.isPlayer()) {
 					switch (control.getMove(s.getPlayer())) {
 					case LEFT:
@@ -69,7 +69,7 @@ public class Gameloop implements Runnable {
 			// Ball movement
 			Point2D nextLoc = MovementUtilities.getNextLocation(ball);
 			MovementUtilities.CollisionInfo cInfo = MovementUtilities
-					.checkCollision(field, ball, nextLoc);
+					.checkCollision(poly, ball, nextLoc);
 			if (cInfo == null) { // No collision
 				ball.setLocation(nextLoc);
 			} else { // There is a collision
@@ -80,21 +80,21 @@ public class Gameloop implements Runnable {
 			}
 
 			// Ball outside field, we need to score
-			if (!field.contains(ball.getLocation())) {
-				String loser = PolygonUtilities.closestPlayer(field,
+			if (!poly.contains(ball.getLocation())) {
+				String loser = PolygonUtilities.closestPlayer(poly,
 						ball.getLocation());
 
 				score.decreaseLife(loser, 1);
 
 				if (score.getLives(loser) <= 0) {
-					field.removePlayer(loser);
+					poly.removePlayer(loser);
 				}
 
 				if (score.checkWinner()) {
 					state.finish();
 				} else {
 					// Reset the ball
-					ball.setLocation(Ball.DEFAULT_LOCATION);
+					ball.setLocation(InternalBall.DEFAULT_LOCATION);
 					ball.setDirection(Math.random() * (2 * Math.PI));
 					new Thread(new BallStart(ball, 1000)).start();
 				}

@@ -1,4 +1,4 @@
-package game.state;
+package game.state.internalState;
 
 
 import game.utilities.Constants;
@@ -7,7 +7,7 @@ import game.utilities.Constants;
  * A paddle, mostly a helper class for a side. Threadsafe and lockless
  * @author Matthew
  */
-public class Paddle {
+public class InternalPaddle {
 	//Paddle instance stuff
 	/** Width and center of this paddle */
 	private final double width;
@@ -16,7 +16,7 @@ public class Paddle {
 	/**
 	 * Constructs a player with default width and center. Use for players
 	 */
-	public Paddle(){
+	public InternalPaddle(){
 		this(Constants.DEFAULT_WIDTH);
 	}
 	
@@ -24,7 +24,7 @@ public class Paddle {
 	 * Constructs a player with given widthPercent. Set to 100 for a side
 	 * @param widthPercent The percent of the side this paddle takes up
 	 */
-	public Paddle(double widthPercent) {
+	public InternalPaddle(double widthPercent) {
 		this.width = widthPercent;
 		this.center = Constants.DEFAULT_CENTER;
 	}

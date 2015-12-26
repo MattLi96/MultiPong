@@ -1,4 +1,4 @@
-package game.state;
+package game.state.internalState;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This class maps players to the movement option they would like. This is threadsafe
  * @author Matthew
  */
-public class ControlState {
+public class InternalControlState {
 	/**
 	 * The various movement options for a paddle. 
 	 */
@@ -18,8 +18,8 @@ public class ControlState {
 	/**
 	 * @param players The names of the players in the game
 	 */
-	public ControlState(Set<String> players){
-		playerMove = new ConcurrentHashMap<String, ControlState.Movement>();
+	public InternalControlState(Set<String> players){
+		playerMove = new ConcurrentHashMap<String, InternalControlState.Movement>();
 		for(String player : players){
 			playerMove.put(player, Movement.NONE);
 		}
