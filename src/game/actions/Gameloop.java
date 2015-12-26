@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import game.state.internalState.*;
+import game.utilities.Constants;
 import game.utilities.MovementUtilities;
 import game.utilities.PolygonUtilities;
 
@@ -74,8 +75,9 @@ public class Gameloop implements Runnable {
 			if (cInfo == null) { // No collision
 				ball.setLocation(nextLoc);
 			} else { // There is a collision
+				double randomAdjustment = Math.random()*Constants.RANDOM_BOUNCE_ADJUSTMENT - (Constants.RANDOM_BOUNCE_ADJUSTMENT/2);
 				ball.setDirection(MovementUtilities.bounceDirection(
-						cInfo.side(), ball.getDirection()));
+						cInfo.side(), ball.getDirection()) + randomAdjustment);
 				ball.setLocation(MovementUtilities.bounceLocation(cInfo.wall(),
 						cInfo.trajectory()));
 			}

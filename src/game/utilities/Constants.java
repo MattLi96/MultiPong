@@ -53,4 +53,9 @@ public class Constants {
 	 * measured in units/sec^2
 	 */
 	public static final double DEFAULT_ACCELERATION = 10;
+	
+	/**
+	 * Slightly random adjustment on a bounce to keep it a bit interesting
+	 */
+	public static final double RANDOM_BOUNCE_ADJUSTMENT = Math.PI/12;
 }
