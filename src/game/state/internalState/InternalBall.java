@@ -44,10 +44,10 @@ public class InternalBall {
      * @param speed ball speed
      */
     public InternalBall(Point2D location, int radius, double direction, int speed) {
-    	this.location = location;
     	this.radius = radius;
-    	this.direction = direction;
-    	this.speed = speed;
+    	setLocation(location);
+    	setSpeed(speed);
+    	setDirection(direction);
     }
     
     public Point2D getLocation(){
@@ -71,6 +71,13 @@ public class InternalBall {
     }
     
     public void setDirection(double direction){
+    	//Two while loops for normalizing the direction between 0 <= direction <= 2*Math.PI
+    	if(direction > 2*Math.PI){
+    		direction -= 2*Math.PI * ((int)(direction/(2*Math.PI)));
+    	} else if (direction < 0){
+    		direction += 2*Math.PI * ((int)(-1 * direction/(2*Math.PI)) + 1);
+    	}
+    	
     	this.direction = direction;
     }
     
