@@ -46,6 +46,7 @@ public class Gameloop implements Runnable {
 		}, 0, 30); // Run every 30 milliseconds
 
 		// Gamelogic
+		startBall();
 		while (!state.finished()) {
 			// Wait for appropriate time to go
 			barrier.await();
@@ -94,15 +95,22 @@ public class Gameloop implements Runnable {
 					state.finish();
 				} else {
 					// Reset the ball
-					ball.setLocation(InternalBall.DEFAULT_LOCATION);
-					ball.setDirection(Math.random() * (2 * Math.PI));
-					new Thread(new BallStart(ball, 1000)).start();
+					startBall();
 				}
 			}
 		}
 
 		// Given game has ended, cleanup
 		timer.cancel();
+	}
+	
+	/**
+	 * Resets the ball to default location and starts it moving
+	 */
+	private void startBall(){
+		ball.setLocation(InternalBall.DEFAULT_LOCATION);
+		ball.setDirection(Math.random() * (2 * Math.PI));
+		new Thread(new BallStart(ball, 1000)).start();
 	}
 
 	/**

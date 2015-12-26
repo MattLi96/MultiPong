@@ -12,6 +12,13 @@ public class Side {
 		this.side = side;
 	}
 	
+	/**
+	 * @return a Line2D representing this side
+	 */
+	public Line2D.Double getLine(){
+		return side;
+	}
+	
     /**
      * @return The line representing this side's paddle (or the whole side if there is no paddle)
      */
