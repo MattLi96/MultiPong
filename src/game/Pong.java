@@ -23,14 +23,18 @@ public interface Pong {
 	
 	/**
 	 * Starts the given pong game. Does nothing if the game has already been started.
+	 * Requires there are at least two players. 
+	 * 
 	 * @param lives the number of lives each player starts with
+	 * @return true if the game was able to start, else false
 	 */
-	public void start(int lives);
+	public boolean start(int lives);
 	
 	/**
 	 * Starts the given pong game. Does nothing if the game has already been started. Starts with default lives
+	 * @return true if the game was able to start, else false
 	 */
-	public void start();
+	public boolean start();
 	
 	/**
 	 * Ends the pong game. Does not immediately start again. Does not remove the players. No winner is decided if you terminate this way

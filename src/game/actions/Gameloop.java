@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import utilities.TimerBarrier;
 import game.state.internalState.*;
 import game.utilities.Constants;
 import game.utilities.MovementUtilities;
@@ -23,7 +24,7 @@ public class Gameloop implements Runnable {
 	private final InternalPolygon poly;
 	private final InternalControlState control;
 
-	private final RunBarrier barrier;
+	private final TimerBarrier barrier;
 
 	public Gameloop(InternalState s) {
 		state = s;
@@ -33,18 +34,12 @@ public class Gameloop implements Runnable {
 		control = s.getControls();
 
 		// Use a barrier with a timer for timing this loop
-		barrier = new RunBarrier();
+		barrier = new TimerBarrier(30);
 	}
 
 	public void run() {
 		// Setup timer here
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				barrier.runNotify();
-			}
-		}, 0, 30); // Run every 30 milliseconds
+		barrier.start();
 
 		// Gamelogic
 		startBall();
@@ -103,7 +98,7 @@ public class Gameloop implements Runnable {
 		}
 
 		// Given game has ended, cleanup
-		timer.cancel();
+		barrier.stop();
 	}
 	
 	/**
@@ -113,32 +108,5 @@ public class Gameloop implements Runnable {
 		ball.setLocation(InternalBall.DEFAULT_LOCATION);
 		ball.setDirection(Math.random() * (2 * Math.PI));
 		new Thread(new BallStart(ball, 1000)).start();
-	}
-
-	/**
-	 * Slightly modified barrier for the run method
-	 */
-	private class RunBarrier {
-		private boolean wait;
-
-		public RunBarrier() {
-			wait = true;
-		}
-
-		public synchronized void await() {
-			while (wait) {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			wait = true;
-		}
-
-		public synchronized void runNotify() {
-			wait = false;
-			notifyAll();
-		}
 	}
 }

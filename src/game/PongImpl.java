@@ -38,22 +38,26 @@ public class PongImpl implements Pong {
 	 * Initializes the Pong game. Does not start the game.
 	 */
 	public PongImpl(){
-		players = new HashSet<String>();
+		HashSet<String> temp = new HashSet<String>();
+		temp.add("temp player 1"); temp.add("temp player 2");
 		pState = new PongState(
 				new InternalState(
-						new InternalPolygon(players), 
+						new InternalPolygon(temp), 
 						new InternalBall(), 
-						new InternalControlState(players), 
-						new InternalScore(players)));
+						new InternalControlState(temp), 
+						new InternalScore(temp)));
 		pState.iState.start(); pState.iState.finish();
+		
+		players = new HashSet<String>();
 	}
 	
 	public State getState(){
 		return pState.state;
 	}
 	
-	public synchronized void start(int lives){
-		if(pState.iState.started() && !pState.iState.finished()){ return; } //Game is already playing, let it continue to play.
+	public synchronized boolean start(int lives){
+		if(pState.iState.started() && !pState.iState.finished()){ return false; } //Game is already playing, let it continue to play.
+		if(players.size() < 2){ return false; } //not enough players
 		
 		//create a new gamestate
 		InternalPolygon f = new InternalPolygon(players);
@@ -65,10 +69,11 @@ public class PongImpl implements Pong {
 		//Actually start the game
 		pState.iState.start();
 		new Thread(new Gameloop(pState.iState)).start();
+		return true;
 	}
 	
-	public synchronized void start(){
-		this.start(Constants.DEFAULT_LIVES);
+	public synchronized boolean start(){
+		return this.start(Constants.DEFAULT_LIVES);
 	}
 	
 	public synchronized void end(){
