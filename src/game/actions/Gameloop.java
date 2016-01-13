@@ -48,7 +48,6 @@ public class Gameloop implements Runnable {
 		barrier.start();
 
 		startBall(); // setup the ball
-
 		// Gamelogic
 		while (!state.finished()) {
 			// Wait for appropriate time to go

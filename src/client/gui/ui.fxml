@@ -20,23 +20,33 @@
             </AnchorPane>
           <AnchorPane minWidth="-Infinity" SplitPane.resizableWithParent="false">
                <children>
-                  <ScrollPane>
+                  <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
                         <VBox>
                            <children>
+                              <TitledPane expanded="false" text="Help">
+                                <content>
+                                  <AnchorPane>
+                                       <children>
+                                          <VBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#controlsPopup" text="Controls" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </TitledPane>
                               <TitledPane fx:id="userTitlePane" text="User Controls">
                                  <content>
                                     <AnchorPane>
                                        <children>
-                                          <VBox alignment="CENTER" fillWidth="false" prefHeight="71.0" prefWidth="283.0" spacing="5.0">
+                                          <VBox alignment="CENTER" fillWidth="false" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <TextField fx:id="username" alignment="CENTER" promptText="username" />
                                                 <Button fx:id="joinGame" alignment="CENTER" mnemonicParsing="false" onAction="#joinGame" text="Join Game" />
                                                 <Button fx:id="leaveGame" alignment="CENTER" mnemonicParsing="false" onAction="#leaveGame" text="Leave Game" />
                                              </children>
-                                             <padding>
-                                                <Insets top="5.0" />
-                                             </padding>
                                           </VBox>
                                        </children>
                                     </AnchorPane>
@@ -46,7 +56,7 @@
                                  <content>
                                     <AnchorPane>
                                        <children>
-                                          <VBox alignment="CENTER" prefHeight="23.0" prefWidth="283.0" spacing="5.0">
+                                          <VBox alignment="CENTER" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <HBox alignment="CENTER" spacing="10.0">
                                                    <children>
@@ -56,9 +66,6 @@
                                                 </HBox>
                                                 <Button fx:id="endGame" alignment="CENTER" mnemonicParsing="false" onAction="#endGame" text="End Game" />
                                              </children>
-                                             <padding>
-                                                <Insets top="5.0" />
-                                             </padding>
                                           </VBox>
                                        </children>
                                     </AnchorPane>
@@ -66,9 +73,9 @@
                               </TitledPane>
                               <TitledPane text="Lives">
                                  <content>
-                                    <AnchorPane maxHeight="1.7976931348623157E308">
+                                    <AnchorPane>
                                        <children>
-                                          <VBox alignment="CENTER" spacing="10.0">
+                                          <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <Label fx:id="winner" maxWidth="1.7976931348623157E308" text="Winner: ">
                                                    <font>
@@ -90,9 +97,6 @@
                                                    </VBox.margin>
                                                 </GridPane>
                                              </children>
-                                             <padding>
-                                                <Insets left="20.0" right="20.0" top="5.0" />
-                                             </padding>
                                           </VBox>
                                        </children>
                                     </AnchorPane>

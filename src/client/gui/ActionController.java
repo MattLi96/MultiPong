@@ -31,6 +31,9 @@ import game.PongImpl;
  * @author Matthew
  */
 public class ActionController implements Initializable {
+	@FXML
+	private Label helpText;
+	
 	/** The anchor pane that the pong game is drawn on */
 	@FXML
 	private StackPane world;
@@ -49,7 +52,7 @@ public class ActionController implements Initializable {
 	 * player is not part of the game then it's the empty string. Used to helps
 	 * determine if the player has joined the game already or not.
 	 */
-	private String curr_username;
+	private String currUsername;
 
 	@FXML
 	private TitledPane gameTitlePane;
@@ -69,10 +72,11 @@ public class ActionController implements Initializable {
 
 	/** The pong game the GUI interacts with */
 	private Pong pong;
+	PongGraphics pongGraphics;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		curr_username = ""; // set username to none
+		currUsername = ""; // set username to none
 		leaveGame.setDisable(true); // cannot leave the game yet
 
 		// TODO Implement. Add in server chooser here as well as world stuff.
@@ -82,8 +86,8 @@ public class ActionController implements Initializable {
 		pong.addPlayer("Hello");
 		pong.addPlayer("World");
 
-		PongGraphics pg = new PongGraphics(pong, world, winner, livesGrid);
-		pg.start();
+		pongGraphics = new PongGraphics(pong, world, winner, livesGrid);
+		pongGraphics.start();
 
 		setupKeyEvents();
 	}
@@ -100,6 +104,10 @@ public class ActionController implements Initializable {
 					moveRight = true;
 				} else if (keyEvent.getCode() == KeyCode.LEFT) {
 					moveLeft = true;
+				} else if (keyEvent.getCode() == KeyCode.R){
+					pongGraphics.rotate();
+				} else if (keyEvent.getCode() == KeyCode.T && !currUsername.equals("")){
+					pongGraphics.rotate(currUsername);
 				}
 				
 				movePaddle();
@@ -126,18 +134,24 @@ public class ActionController implements Initializable {
 	}
 	
 	private synchronized void movePaddle(){
-		if (curr_username.equals(""))
+		if (currUsername.equals(""))
 			return;
 		
 		if(moveRight ^ moveLeft){
 			if(moveRight){
-				pong.moveRight(curr_username);
+				pong.moveRight(currUsername);
 			} else {
-				pong.moveLeft(curr_username);
+				pong.moveLeft(currUsername);
 			}
 		} else {
-			pong.moveNone(curr_username);
+			pong.moveNone(currUsername);
 		}
+	}
+	
+	public void controlsPopup(){
+		String text = "Controls: \n r: rotate the field once \n t: rotate your side to the bottom"
+				+ "\n right arrow: move paddle right \n left arrow: move paddle left";
+		showPopUp(text);
 	}
 
 	/**
@@ -146,14 +160,14 @@ public class ActionController implements Initializable {
 	public synchronized void joinGame() {
 		String name = username.getText();
 		if (pong.addPlayer(name)) {
-			curr_username = name;
+			currUsername = name;
 			username.setDisable(true);
 			joinGame.setDisable(true);
 			leaveGame.setDisable(false);
 			userTitlePane.setExpanded(false);
 		} else {
 			showPopUp("Was unable to join the game, likely due to the same username already being used");
-			curr_username = "";
+			currUsername = "";
 			username.setDisable(false);
 			joinGame.setDisable(false);
 			leaveGame.setDisable(true);
@@ -168,8 +182,8 @@ public class ActionController implements Initializable {
 			return;
 
 		// Remove the player from the game
-		pong.removePlayer(curr_username);
-		curr_username = "";
+		pong.removePlayer(currUsername);
+		currUsername = "";
 		username.setDisable(false);
 		joinGame.setDisable(false);
 		leaveGame.setDisable(true);
@@ -221,7 +235,7 @@ public class ActionController implements Initializable {
 	 */
 	public synchronized boolean checkJoined() {
 		// If player has not joined the game
-		if (curr_username.equals("")) {
+		if (currUsername.equals("")) {
 			showPopUp("You have not joined the game yet");
 			return false;
 		}
@@ -236,12 +250,17 @@ public class ActionController implements Initializable {
 	 */
 	public void showPopUp(String message) {
 		final Stage newStage = new Stage();
+		
 		VBox comp = new VBox(10);
 		comp.setAlignment(Pos.CENTER);
+		
+		//Message
 		Label errorMessage = new Label(message);
 		errorMessage.setWrapText(true);
 		errorMessage.setTextAlignment(TextAlignment.CENTER);
 		errorMessage.setAlignment(Pos.CENTER);
+		
+		//Ok button
 		Button ok = new Button("Ok");
 		ok.setPrefHeight(50);
 		ok.setPrefWidth(100);
@@ -253,8 +272,11 @@ public class ActionController implements Initializable {
 			}
 
 		}));
+		
+		//Add to Vbox
 		comp.getChildren().add(errorMessage);
 		comp.getChildren().add(ok);
+		
 		Scene stageScene = new Scene(comp, 400, 200);
 		newStage.setScene(stageScene);
 		newStage.getScene().getStylesheets()
