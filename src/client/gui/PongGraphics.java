@@ -204,7 +204,7 @@ public class PongGraphics {
 			rotateSide = 0;
 
 			// Set line width
-			gc.setLineWidth(3);
+			gc.setLineWidth(5);
 		}
 
 		/**
@@ -296,7 +296,7 @@ public class PongGraphics {
 					gc.setTransform(temp);
 
 					// Actually write the text
-					gc.strokeText(s.getPlayer(), cx, cy);
+					gc.fillText(s.getPlayer(), cx, cy);
 
 					// Undo the transform
 					gc.setTransform(transform);
