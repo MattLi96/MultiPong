@@ -30,7 +30,7 @@ public class InternalBall {
      * a randomly determined direction.
      */
     public InternalBall() {
-        this(InternalBall.DEFAULT_LOCATION, Constants.DEFAULT_RADIUS, 
+        this(InternalBall.DEFAULT_LOCATION, Constants.DEFAULT_BALL_RADIUS, 
         		Math.random() * (2 * Math.PI), Constants.DEFAULT_MAX_SPEED);
     }
     

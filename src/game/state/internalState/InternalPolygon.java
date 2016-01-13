@@ -19,11 +19,6 @@ public class InternalPolygon extends java.awt.Polygon { //Extends awt polygon fo
 	private final ArrayList<InternalSide> sides; //the array representing the sides of a polygon don't change
 	
 	/**
-	 * Default radius of the polygon
-	 */
-	public static final int RADIUS = 1000;
-	
-	/**
      * Constructs a regular polygon in an absolute frame of reference.
      * Also constructs a hidden, smaller polygon used for collision detection.
      * 
@@ -40,8 +35,8 @@ public class InternalPolygon extends java.awt.Polygon { //Extends awt polygon fo
      * @param numSides players.size()*2
      */
     private InternalPolygon(Set<String> players, int numSides){
-    	super(PolygonUtilities.calculateX(InternalPolygon.RADIUS, numSides), 
-    			PolygonUtilities.calculateY(InternalPolygon.RADIUS, numSides), 
+    	super(PolygonUtilities.calculateX(Constants.POLYGON_RADIUS, numSides), 
+    			PolygonUtilities.calculateY(Constants.POLYGON_RADIUS, numSides), 
     			numSides);
     	playerToSide = new ConcurrentHashMap<String, Integer>();
     	

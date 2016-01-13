@@ -42,7 +42,7 @@ public class Constants {
 	/**
 	 * Default ball radius. Not currently used for collisions.
 	 */
-	public static final int DEFAULT_RADIUS = 20;
+	public static final int DEFAULT_BALL_RADIUS = 20;
 
 	/**
 	 * Default ball speed.
@@ -58,4 +58,10 @@ public class Constants {
 	 * Slightly random adjustment on a bounce to keep it a bit interesting
 	 */
 	public static final double RANDOM_BOUNCE_ADJUSTMENT = Math.PI/12;
+
+	//Polygon Constants
+	/**
+	 * Default radius of the polygon
+	 */
+	public static final int POLYGON_RADIUS = 1000;
 }

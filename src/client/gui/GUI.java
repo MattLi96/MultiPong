@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 
 /**
  * Main class for our GUI. Also sets the theme.
+ * Most of the important GUI code is in ActionController
  */
 public class GUI extends Application {
 

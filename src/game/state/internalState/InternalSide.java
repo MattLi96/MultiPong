@@ -108,6 +108,6 @@ public class InternalSide extends Line2D.Double {
      * @return if this side is a player or not
      */
     public boolean isPlayer(){
-    	return "".equals(player);
+    	return !"".equals(player);
     }
 }
