@@ -54,7 +54,7 @@ public class InternalScore {
 		if (currLife == null)
 			return;
 
-		int endLife = Math.max(currLife, 0);
+		int endLife = Math.max(currLife - 1, 0);
 		lives.put(player, endLife);
 	}
 
