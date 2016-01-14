@@ -3,13 +3,10 @@ package client.gui;
 import game.Pong;
 import game.PongImpl;
 import game.state.State;
-import client.http.HttpPong;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -29,8 +26,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import client.http.HttpPong;
 
 /**
  * Controller for the GUI, initializes the view. Contains most of the important

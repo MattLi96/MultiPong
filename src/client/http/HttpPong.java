@@ -1,5 +1,8 @@
 package client.http;
 
+import game.Pong;
+import game.state.State;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,16 +12,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import utilities.TimerBarrier;
+import bundle.request.GameRequest;
+import bundle.request.GameRequest.GameRequestType;
+import bundle.request.MoveRequest;
+import bundle.request.MoveRequest.Type;
+import bundle.request.PlayerRequest;
+import bundle.request.PlayerRequest.PlayerRequestType;
+import bundle.request.Request;
+import bundle.response.GameResponse;
+import bundle.response.LoginResponse;
+import bundle.response.PlayerResponse;
+import bundle.response.StateResponse;
 
 import com.google.gson.Gson;
-
-import bundle.request.*;
-import bundle.request.GameRequest.GameRequestType;
-import bundle.request.MoveRequest.Type;
-import bundle.request.PlayerRequest.PlayerRequestType;
-import bundle.response.*;
-import game.Pong;
-import game.state.State;
 
 // BufferedReader r = request.getReader();
 // gson.fromJson(r, EntityBundle.class);
@@ -66,7 +72,7 @@ public class HttpPong implements Pong {
 			new Thread(updater).start();
 		} catch (MalformedURLException e) {
 			throw e;
-		} catch (Exception e) { //Likely the same issue, which is invalid url
+		} catch (Exception e) { // Likely the same issue, which is invalid url
 			e.printStackTrace();
 			throw new MalformedURLException();
 		}
@@ -101,8 +107,7 @@ public class HttpPong implements Pong {
 
 	@Override
 	public void end() {
-		BufferedReader r = communicate("POST", "/game", new GameRequest(
-				GameRequestType.END));
+		communicate("POST", "/game", new GameRequest(GameRequestType.END));
 	}
 
 	@Override
@@ -201,6 +206,7 @@ public class HttpPong implements Pong {
 			stopEvent = false;
 		}
 
+		@SuppressWarnings("unused")
 		public void stop() {
 			stopEvent = true;
 		}

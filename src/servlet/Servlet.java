@@ -1,34 +1,28 @@
 package servlet;
 
-import bundle.request.*;
-import bundle.response.*;
-import game.state.State;
-import game.*;
+import game.Pong;
+import game.PongImpl;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bundle.request.GameRequest;
+import bundle.request.MoveRequest;
+import bundle.request.PlayerRequest;
+import bundle.response.GameResponse;
+import bundle.response.LoginResponse;
+import bundle.response.PlayerResponse;
+import bundle.response.StateResponse;
+
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 
 /**
  * Main class for the servlet

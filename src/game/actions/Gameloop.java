@@ -1,14 +1,18 @@
 package game.actions;
 
-import java.awt.geom.Point2D;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import utilities.TimerBarrier;
-import game.state.internalState.*;
+import game.state.internalState.InternalBall;
+import game.state.internalState.InternalControlState;
+import game.state.internalState.InternalPolygon;
+import game.state.internalState.InternalScore;
+import game.state.internalState.InternalSide;
+import game.state.internalState.InternalState;
 import game.utilities.Constants;
 import game.utilities.MovementUtilities;
 import game.utilities.PolygonUtilities;
+
+import java.awt.geom.Point2D;
+
+import utilities.TimerBarrier;
 
 /**
  * The main gameloop of a pong game

@@ -1,6 +1,5 @@
 package client.gui;
 
-import game.Pong;
 import game.state.Ball;
 import game.state.Polygon;
 import game.state.Score;

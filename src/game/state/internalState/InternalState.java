@@ -1,6 +1,5 @@
 package game.state.internalState;
 
-import game.state.State;
 
 /**
  * Container for all the various aspects of a pong gamestate. This should be threadsafe
