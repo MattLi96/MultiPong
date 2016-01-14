@@ -4,18 +4,9 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -40,7 +31,7 @@ public class GUI extends Application {
 		Scene scene = new Scene(root, 1280, 800);
 		
 		scene.getStylesheets().add(getClass().getResource("Material Theme.css").toString());
-		stage.setTitle("The Return of Pong Legacy: A Game of Tears");
+		stage.setTitle("The Return of Pong Legacy: Revised");
 		
 		stage.setScene(scene);
 		stage.sizeToScene();

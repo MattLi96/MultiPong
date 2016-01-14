@@ -13,7 +13,7 @@ public class MovementUtilities {
 	 *            the ball.
 	 * @return next location of the ball
 	 */
-	public static Point2D getNextLocation(InternalBall ball) {
+	public static Point2D.Double getNextLocation(InternalBall ball) {
 		double newX = Math.cos(ball.getDirection()) * ball.getSpeed()
 				+ ball.getLocation().getX();
 		double newY = -1.0 * Math.sin(ball.getDirection()) * ball.getSpeed()
@@ -42,7 +42,7 @@ public class MovementUtilities {
 	 *            A line representing the trajectory of a ball
 	 * @return the location of a ball after bouncing on the given wall
 	 */
-	public static Point2D bounceLocation(Line2D wall, Line2D trajectory) {
+	public static Point2D.Double bounceLocation(Line2D wall, Line2D trajectory) {
 		return LineUtilities.pointOfIntersection(wall, trajectory);
 	}
 

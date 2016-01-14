@@ -77,7 +77,7 @@ public class Gameloop implements Runnable {
 			}
 
 			// Ball movement
-			Point2D nextLoc = MovementUtilities.getNextLocation(ball);
+			Point2D.Double nextLoc = MovementUtilities.getNextLocation(ball);
 			MovementUtilities.CollisionInfo cInfo = MovementUtilities
 					.checkCollision(poly, ball, nextLoc);
 			if (cInfo == null) { // No collision

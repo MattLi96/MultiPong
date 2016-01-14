@@ -1,7 +1,16 @@
 package client.gui;
 
+import game.Pong;
+import game.state.Ball;
+import game.state.Polygon;
+import game.state.Score;
+import game.state.Side;
+import game.state.State;
+import game.utilities.Constants;
+
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Map;
 
 import javafx.animation.KeyFrame;
@@ -12,20 +21,12 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import game.Pong;
-import game.state.*;
-import game.utilities.Constants;
 
 /**
  * Used for drawing out the pong game onto the GUI
@@ -220,7 +221,8 @@ public class PongGraphics {
 		 */
 		private synchronized void rotate(String username) {
 			int sideNum = -1;
-			for (Side s : pong.getState().getPolygon().getSides()) {
+			List<Side> sides = pong.getState().getPolygon().getSides();
+			for (Side s : sides) {
 				if (s.isPlayer() && s.getPlayer().equals(username)) {
 					sideNum = s.getSideNum();
 				}
@@ -228,10 +230,10 @@ public class PongGraphics {
 
 			// Rotate opposite side to the top
 			rotateSide = sideNum
-					+ pong.getState().getPolygon().getSides().size() / 2;
+					+ sides.size() / 2;
 
 			// Rotate mod for convenience
-			rotateSide %= pong.getState().getPolygon().getSides().size();
+			rotateSide %= sides.size();
 		}
 
 		/**
@@ -274,8 +276,7 @@ public class PongGraphics {
 					double degAngle = Math.toDegrees(angle);
 
 					double cx = (l.x1 + l.x2) / 2;
-					double cy = -(l.y1 + l.y2) / 2; // Negative fix due to
-													// scaling
+					double cy = -(l.y1 + l.y2) / 2; // Negative fix due to scaling
 
 					// Shift out a little extra
 					cx += Math.signum(cx)

@@ -11,7 +11,7 @@ public class Ball {
 		this.ball = ball;
 	}
 
-    public Point2D getLocation(){
+    public Point2D.Double getLocation(){
     	return ball.getLocation();
     }
     

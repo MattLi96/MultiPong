@@ -1,8 +1,13 @@
 package client.gui;
 
+import game.Pong;
+import game.PongImpl;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.http.HttpPong;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,14 +20,11 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import game.Pong;
-import game.PongImpl;
 
 /**
  * Controller for the GUI, initializes the view. Contains most of the important
@@ -82,10 +84,12 @@ public class ActionController implements Initializable {
 		// TODO Implement. Add in server chooser here as well as world stuff.
 
 		// TODO remove, this is testing code
-		pong = new PongImpl();
-		pong.addPlayer("Hello");
-		pong.addPlayer("World");
-
+		try {
+			pong = new HttpPong("http://localhost:8080/MultiPong");
+		} catch (MalformedURLException e) {
+			showPopUp("Could not connect. Probably invalid URL");
+		}
+		
 		pongGraphics = new PongGraphics(pong, world, winner, livesGrid);
 		pongGraphics.start();
 
@@ -211,7 +215,7 @@ public class ActionController implements Initializable {
 		}
 
 		if (!started) {
-			showPopUp("Unable to start game, it may already be running");
+			showPopUp("Unable to start game, it may already be running or there are not enough players");
 		} else {
 			gameTitlePane.setExpanded(false);
 		}

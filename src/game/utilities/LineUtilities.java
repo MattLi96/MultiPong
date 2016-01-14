@@ -12,7 +12,7 @@ public class LineUtilities {
      * @param l1 first line segment
      * @param l2 second line segment
      */
-	public static Point2D pointOfIntersection(Line2D l1, Line2D l2) {
+	public static Point2D.Double pointOfIntersection(Line2D l1, Line2D l2) {
         /*
          * Given (x1, y1) and (x2, y2), in standard form, (a)x + (b)y = c:
          *

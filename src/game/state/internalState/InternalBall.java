@@ -13,11 +13,11 @@ public class InternalBall {
 	/**
 	 * Default ball location. This should be the center of the polygon
 	 */
-	public static final Point2D DEFAULT_LOCATION = new Point2D.Double(0, 0);
+	public static final Point2D.Double DEFAULT_LOCATION = new Point2D.Double(0, 0);
 	
 	
 	private final int radius; //Radius should not change
-	private volatile Point2D location;
+	private volatile Point2D.Double location;
 	
     /** Direction of the Ball in radians with 0 being to the east. */
     private volatile double direction;
@@ -43,18 +43,18 @@ public class InternalBall {
      * @param direction ball direction
      * @param speed ball speed
      */
-    public InternalBall(Point2D location, int radius, double direction, int speed) {
+    public InternalBall(Point2D.Double location, int radius, double direction, int speed) {
     	this.radius = radius;
     	setLocation(location);
     	setSpeed(speed);
     	setDirection(direction);
     }
     
-    public Point2D getLocation(){
+    public Point2D.Double getLocation(){
     	return location;
     }
     
-    public void setLocation(Point2D location){
+    public void setLocation(Point2D.Double location){
     	this.location = location;
     }
     
