@@ -44,15 +44,15 @@ public class PongGraphics {
 	private Label winner;
 	private GridPane livesGrid;
 
-	// The pong game
-	private Pong pong;
-
 	private boolean started;
 
-	public PongGraphics(Pong pong, StackPane world, Label winner,
+	//Action Controller really only for one method, getPongState()
+	private ActionController ac;
+	
+	public PongGraphics(ActionController ac, StackPane world, Label winner,
 			GridPane livesGrid) {
 		// Setup the fields
-		this.pong = pong;
+		this.ac = ac;
 		this.winner = winner;
 		this.livesGrid = livesGrid;
 		started = false;
@@ -121,7 +121,7 @@ public class PongGraphics {
 	 * Draws the score in the scorebox
 	 */
 	private void drawScore() {
-		State s = pong.getState();
+		State s = ac.getPongState();
 		Score score = s.getScore();
 
 		winner.setText("Winner: " + score.getWinner());
@@ -213,7 +213,7 @@ public class PongGraphics {
 		 */
 		private synchronized void rotate() {
 			rotateSide += 1;
-			rotateSide %= pong.getState().getPolygon().getSides().size();
+			rotateSide %= ac.getPongState().getPolygon().getSides().size();
 		}
 
 		/**
@@ -221,7 +221,7 @@ public class PongGraphics {
 		 */
 		private synchronized void rotate(String username) {
 			int sideNum = -1;
-			List<Side> sides = pong.getState().getPolygon().getSides();
+			List<Side> sides = ac.getPongState().getPolygon().getSides();
 			for (Side s : sides) {
 				if (s.isPlayer() && s.getPlayer().equals(username)) {
 					sideNum = s.getSideNum();
@@ -251,7 +251,7 @@ public class PongGraphics {
 			gc.clearRect(0, 0, width, height); // Clear the previous drawing
 
 			// Objects we will need
-			State state = pong.getState();
+			State state = ac.getPongState();
 			Polygon poly = state.getPolygon();
 			Ball ball = state.getBall();
 
@@ -290,9 +290,12 @@ public class PongGraphics {
 					Affine temp = new Affine(transform);
 					temp.appendScale(1, -1); // If not, the words are backwards
 					temp.appendRotation(-degAngle, cx, cy);
-					if (degAngle + rotation > 90 && degAngle + rotation < 270) {
-						// Flip text for easier read
-						temp.appendRotation(180, cx, cy);
+					double totalAngle = degAngle + rotation;
+					if (totalAngle > 90 && totalAngle <= 270) {
+						temp.appendRotation(180, cx, cy); // Flip text for easier reading
+					}
+					if((totalAngle == 90 && cy > 0) || (totalAngle == 270 && cy < 0)){
+						temp.appendRotation(180, cx, cy); // Handles edge case for text flipping
 					}
 					gc.setTransform(temp);
 

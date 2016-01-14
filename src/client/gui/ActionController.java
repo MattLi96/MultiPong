@@ -2,15 +2,20 @@ package client.gui;
 
 import game.Pong;
 import game.PongImpl;
+import game.state.State;
+import client.http.HttpPong;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
-import client.http.HttpPong;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -35,11 +41,11 @@ import javafx.stage.Stage;
 public class ActionController implements Initializable {
 	@FXML
 	private Label helpText;
-	
+
 	/** The anchor pane that the pong game is drawn on */
 	@FXML
 	private StackPane world;
-	
+
 	/** The user title pane and it's properties */
 	@FXML
 	private TitledPane userTitlePane;
@@ -73,26 +79,19 @@ public class ActionController implements Initializable {
 	private GridPane livesGrid;
 
 	/** The pong game the GUI interacts with */
-	private Pong pong;
-	PongGraphics pongGraphics;
-
+	private volatile Pong pong;
+	private PongGraphics pongGraphics;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currUsername = ""; // set username to none
 		leaveGame.setDisable(true); // cannot leave the game yet
 
-		// TODO Implement. Add in server chooser here as well as world stuff.
+		setupHttpPong();
 
-		// TODO remove, this is testing code
-		try {
-			pong = new HttpPong("http://localhost:8080/MultiPong");
-		} catch (MalformedURLException e) {
-			showPopUp("Could not connect. Probably invalid URL");
-		}
-		
-		pongGraphics = new PongGraphics(pong, world, winner, livesGrid);
+		// Startup graphics and key reading
+		pongGraphics = new PongGraphics(this, world, winner, livesGrid);
 		pongGraphics.start();
-
 		setupKeyEvents();
 	}
 
@@ -101,6 +100,7 @@ public class ActionController implements Initializable {
 	 */
 	volatile private boolean moveRight = false;
 	volatile private boolean moveLeft = false;
+
 	private void setupKeyEvents() {
 		final EventHandler<KeyEvent> pressedEventHandler = new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
@@ -108,12 +108,13 @@ public class ActionController implements Initializable {
 					moveRight = true;
 				} else if (keyEvent.getCode() == KeyCode.LEFT) {
 					moveLeft = true;
-				} else if (keyEvent.getCode() == KeyCode.R){
+				} else if (keyEvent.getCode() == KeyCode.R) {
 					pongGraphics.rotate();
-				} else if (keyEvent.getCode() == KeyCode.T && !currUsername.equals("")){
+				} else if (keyEvent.getCode() == KeyCode.T
+						&& !currUsername.equals("")) {
 					pongGraphics.rotate(currUsername);
 				}
-				
+
 				movePaddle();
 				keyEvent.consume();
 			}
@@ -121,28 +122,28 @@ public class ActionController implements Initializable {
 
 		final EventHandler<KeyEvent> releasedEventHandler = new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.RIGHT){
+				if (keyEvent.getCode() == KeyCode.RIGHT) {
 					moveRight = false;
-				} else if(keyEvent.getCode() == KeyCode.LEFT) {
+				} else if (keyEvent.getCode() == KeyCode.LEFT) {
 					moveLeft = false;
 				}
-				
+
 				movePaddle();
 				keyEvent.consume();
 			}
 		};
-		
+
 		world.addEventFilter(MouseEvent.ANY, (e) -> world.requestFocus());
 		world.setOnKeyPressed(pressedEventHandler);
 		world.setOnKeyReleased(releasedEventHandler);
 	}
-	
-	private synchronized void movePaddle(){
+
+	private synchronized void movePaddle() {
 		if (currUsername.equals(""))
 			return;
-		
-		if(moveRight ^ moveLeft){
-			if(moveRight){
+
+		if (moveRight ^ moveLeft) {
+			if (moveRight) {
 				pong.moveRight(currUsername);
 			} else {
 				pong.moveLeft(currUsername);
@@ -151,8 +152,8 @@ public class ActionController implements Initializable {
 			pong.moveNone(currUsername);
 		}
 	}
-	
-	public void controlsPopup(){
+
+	public void controlsPopup() {
 		String text = "Controls: \n r: rotate the field once \n t: rotate your side to the bottom"
 				+ "\n right arrow: move paddle right \n left arrow: move paddle left";
 		showPopUp(text);
@@ -237,13 +238,80 @@ public class ActionController implements Initializable {
 	 * 
 	 * @return if the player has joined the game yet
 	 */
-	public synchronized boolean checkJoined() {
+	private synchronized boolean checkJoined() {
 		// If player has not joined the game
 		if (currUsername.equals("")) {
 			showPopUp("You have not joined the game yet");
 			return false;
 		}
 		return true;
+	}
+	
+	public State getPongState(){
+		return pong.getState();
+	}
+	
+	private void setupHttpPong() {
+		// Temporary pong, will get overwritten once button is clicked
+		pong = new PongImpl();
+		
+		// Stage and Vbox
+		final Stage newStage = new Stage();
+		VBox vbox = new VBox(10);
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(0, 10, 0, 10));
+		
+		// Add message
+		Label message = new Label("Please enter the server URL");
+		message.setWrapText(true);
+		message.setTextAlignment(TextAlignment.CENTER);
+		message.setAlignment(Pos.CENTER);
+
+		// Textfield
+		final TextField url = new TextField();
+		url.setPromptText("URL");
+
+		// Button
+		Button ok = new Button("Ok");
+		ok.setPrefHeight(50);
+		ok.setPrefWidth(100);
+		ok.setOnMouseClicked((new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent arg0) {
+				try {
+					pong = new HttpPong(url.getText());
+					newStage.close();
+				} catch (MalformedURLException e) {
+					showPopUp("Invalid URL");
+				}
+			}
+
+		}));
+
+		// Add to Vbox
+		vbox.getChildren().add(message);
+		vbox.getChildren().add(url);
+		vbox.getChildren().add(ok);
+
+		Scene stageScene = new Scene(vbox, 400, 200);
+		newStage.setScene(stageScene);
+		newStage.getScene().getStylesheets()
+				.add(getClass().getResource("Material Theme.css").toString());
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(500);
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							 newStage.show();
+						}
+					});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
 	/**
@@ -254,17 +322,18 @@ public class ActionController implements Initializable {
 	 */
 	public void showPopUp(String message) {
 		final Stage newStage = new Stage();
-		
-		VBox comp = new VBox(10);
-		comp.setAlignment(Pos.CENTER);
-		
-		//Message
+
+		// Vbox
+		VBox vbox = new VBox(10);
+		vbox.setAlignment(Pos.CENTER);
+
+		// Message
 		Label errorMessage = new Label(message);
 		errorMessage.setWrapText(true);
 		errorMessage.setTextAlignment(TextAlignment.CENTER);
 		errorMessage.setAlignment(Pos.CENTER);
-		
-		//Ok button
+
+		// Ok button
 		Button ok = new Button("Ok");
 		ok.setPrefHeight(50);
 		ok.setPrefWidth(100);
@@ -276,12 +345,12 @@ public class ActionController implements Initializable {
 			}
 
 		}));
-		
-		//Add to Vbox
-		comp.getChildren().add(errorMessage);
-		comp.getChildren().add(ok);
-		
-		Scene stageScene = new Scene(comp, 400, 200);
+
+		// Add to Vbox
+		vbox.getChildren().add(errorMessage);
+		vbox.getChildren().add(ok);
+
+		Scene stageScene = new Scene(vbox, 400, 200);
 		newStage.setScene(stageScene);
 		newStage.getScene().getStylesheets()
 				.add(getClass().getResource("Material Theme.css").toString());
