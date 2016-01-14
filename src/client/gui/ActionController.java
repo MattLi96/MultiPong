@@ -87,8 +87,9 @@ public class ActionController implements Initializable {
 		currUsername = ""; // set username to none
 		leaveGame.setDisable(true); // cannot leave the game yet
 
+		//Setup the pong game
 		setupHttpPong();
-
+		
 		// Startup graphics and key reading
 		pongGraphics = new PongGraphics(this, world, winner, livesGrid);
 		pongGraphics.start();

@@ -205,7 +205,7 @@ public class PongGraphics {
 			rotateSide = 0;
 
 			// Set line width
-			gc.setLineWidth(5);
+			gc.setLineWidth(6);
 		}
 
 		/**

@@ -90,8 +90,7 @@ public class MovementUtilities {
 			Point2D location = ball.getLocation();
 			Line2D trajectory = new Line2D.Double(location, nextLocation);
 			for (InternalSide side : poly.getSides()) {
-				Line2D wall = side.isPlayer() ? side.adjustedPaddleLocation()
-						: side.paddleLocation();
+				Line2D wall = side.adjustedPaddleLocation();
 
 				if (wall.intersectsLine(trajectory)) {
 					return new CollisionInfo(side, trajectory, wall);

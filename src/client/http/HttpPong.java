@@ -43,23 +43,33 @@ public class HttpPong implements Pong {
 	 * @throws MalformedURLException
 	 */
 	public HttpPong(String url) throws MalformedURLException {
-		idSet = false;
-		this.url = url + "/Pong"; // It's assumed that every request from here
-									// has at least pong
-		gson = new Gson();
+		try {
+			idSet = false;
+			this.url = url + "/Pong"; // It's assumed that every request from
+										// here
+										// has at least pong
+			gson = new Gson();
 
-		// Test to see if the url is valid, if not it will throw an exception
-		new URL(url);
+			// Test to see if the url is valid, if not it will throw an
+			// exception
+			new URL(url);
 
-		// Obtain an ID
-		BufferedReader r = communicate("POST", "/login", null);
-		LoginResponse resp = gson.fromJson(r, LoginResponse.class);
-		id = resp.id;
-		idSet = true;
+			// Obtain an ID
+			BufferedReader r = communicate("POST", "/login", null);
+			LoginResponse resp = gson.fromJson(r, LoginResponse.class);
+			id = resp.id;
+			idSet = true;
 
-		updater = new StateUpdater();
-		updater.updateState(); // Update the state once so currState has a state
-		new Thread(updater).start();
+			updater = new StateUpdater();
+			updater.updateState(); // Update the state once so currState has a
+									// state
+			new Thread(updater).start();
+		} catch (MalformedURLException e) {
+			throw e;
+		} catch (Exception e) { //Likely the same issue, which is invalid url
+			e.printStackTrace();
+			throw new MalformedURLException();
+		}
 	}
 
 	// these two methods should work without locks since assignment is atomic
