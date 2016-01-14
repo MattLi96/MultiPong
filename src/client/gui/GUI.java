@@ -10,8 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Main class for our GUI. Also sets the theme.
- * Most of the important GUI code is in ActionController
+ * Main class for our GUI. Also sets the theme. Most of the important GUI code
+ * is in ActionController
  */
 public class GUI extends Application {
 
@@ -29,10 +29,11 @@ public class GUI extends Application {
 	public void start(Stage stage) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("ui.fxml"));
 		Scene scene = new Scene(root, 1280, 800);
-		
-		scene.getStylesheets().add(getClass().getResource("Material Theme.css").toString());
+
+		scene.getStylesheets().add(
+				getClass().getResource("Material Theme.css").toString());
 		stage.setTitle("The Return of Pong Legacy: Revised");
-		
+
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();

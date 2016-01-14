@@ -5,27 +5,11 @@ import java.awt.geom.Point2D;
 
 public class LineUtilities {
     /**
-     * DESCRIPTION (see
-     * <a href="http://en.wikipedia.org/wiki/Cramer's_rule">Cramer's_rule</a>).
-     * Precondition: A point of intersection exists between segments l1 and l2.
-     *
+     * Finds the point of intersection of two lines using Cramer's rule.
      * @param l1 first line segment
      * @param l2 second line segment
      */
 	public static Point2D.Double pointOfIntersection(Line2D l1, Line2D l2) {
-        /*
-         * Given (x1, y1) and (x2, y2), in standard form, (a)x + (b)y = c:
-         *
-         *      a = (y2 - y1)
-         *      b = -(x2 - x1)
-         *      c = (x1 * y2 - x2 * y1)
-         *
-         * So:
-         *      (y2 - y1)x -(x2 - x1)y = (x1 * y2 - x2 * y1)
-         *
-         * Who said linear equations wouldn't come in handy?
-         */
-
         // Extract parameters from lines.
         double x11 = l1.getX1();
         double y11 = l1.getY1();

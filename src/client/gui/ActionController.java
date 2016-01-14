@@ -78,15 +78,15 @@ public class ActionController implements Initializable {
 	/** The pong game the GUI interacts with */
 	private volatile Pong pong;
 	private PongGraphics pongGraphics;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		currUsername = ""; // set username to none
 		leaveGame.setDisable(true); // cannot leave the game yet
 
-		//Setup the pong game
+		// Setup the pong game
 		setupHttpPong();
-		
+
 		// Startup graphics and key reading
 		pongGraphics = new PongGraphics(this, world, winner, livesGrid);
 		pongGraphics.start();
@@ -244,21 +244,21 @@ public class ActionController implements Initializable {
 		}
 		return true;
 	}
-	
-	public State getPongState(){
+
+	public State getPongState() {
 		return pong.getState();
 	}
-	
+
 	private void setupHttpPong() {
 		// Temporary pong, will get overwritten once button is clicked
 		pong = new PongImpl();
-		
+
 		// Stage and Vbox
 		final Stage newStage = new Stage();
 		VBox vbox = new VBox(10);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		
+
 		// Add message
 		Label message = new Label("Please enter the server URL");
 		message.setWrapText(true);
@@ -302,7 +302,7 @@ public class ActionController implements Initializable {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							 newStage.show();
+							newStage.show();
 						}
 					});
 				} catch (InterruptedException e) {

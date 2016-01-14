@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 /**
  * Main class for the servlet. Handles all the requests.
+ * 
  * @author Matthew
  */
 @WebServlet("/")

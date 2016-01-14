@@ -22,13 +22,13 @@ public class MovementUtilities {
 	}
 
 	/**
-	 * @param side the side the ball is bouncing off of
-	 * @param direction current direction of the ball
+	 * @param side
+	 *            the side the ball is bouncing off of
+	 * @param direction
+	 *            current direction of the ball
 	 * @return the new direction of the ball
 	 */
 	public static double bounceDirection(InternalSide side, double direction) {
-		// TODO add in spin and repeat bounce detection (so ball doesn't get trapped)
-
 		double rise = side.getY2() - side.getY1();
 		double run = side.getX2() - side.getX1();
 		double wallAngle = Math.atan(rise / run);
@@ -82,8 +82,8 @@ public class MovementUtilities {
 	 * @return null if there is no collision, otherwise information about the
 	 *         collision
 	 */
-	public static CollisionInfo checkCollision(InternalPolygon poly, InternalBall ball,
-			Point2D nextLocation) {
+	public static CollisionInfo checkCollision(InternalPolygon poly,
+			InternalBall ball, Point2D nextLocation) {
 		// Check whether ball will next be outside of container.
 		if (!poly.contains(nextLocation)) {
 			// Find wall that intersects trajectory, if any.

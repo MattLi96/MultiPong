@@ -12,17 +12,17 @@ import game.utilities.*;
  * 
  * @author Matthew
  */
-public class InternalPolygon extends java.awt.Polygon { // Extends awt polygon
-														// for convenience
+public class InternalPolygon extends java.awt.Polygon {
+	// Extends awt polygon for convenience
 	/**
 	 * No warning!
 	 */
 	private static final long serialVersionUID = 1950486100618058392L;
-	private ConcurrentHashMap<String, Integer> playerToSide; // map player to
-																// side number
-	private final ArrayList<InternalSide> sides; // the array representing the
-													// sides of a polygon don't
-													// change
+
+	// map player to side number
+	private ConcurrentHashMap<String, Integer> playerToSide;
+	// the array representing the sides of a polygon don't change
+	private final ArrayList<InternalSide> sides;
 
 	/**
 	 * Slightly bigger internal polygon for contains
@@ -51,14 +51,15 @@ public class InternalPolygon extends java.awt.Polygon { // Extends awt polygon
 	 *            players.size()*2
 	 */
 	private InternalPolygon(Set<String> players, int numSides) {
-		super(PolygonUtilities.calculateX(Constants.POLYGON_RADIUS, numSides),
+		super(
+				PolygonUtilities.calculateX(Constants.POLYGON_RADIUS, numSides),
 				PolygonUtilities.calculateY(Constants.POLYGON_RADIUS, numSides),
 				numSides);
 
-		container = new Polygon(
-				PolygonUtilities.calculateX(Constants.POLYGON_RADIUS + buffer_radius, numSides),
-				PolygonUtilities.calculateY(Constants.POLYGON_RADIUS + buffer_radius, numSides),
-				numSides);
+		container = new Polygon(PolygonUtilities.calculateX(
+				Constants.POLYGON_RADIUS + buffer_radius, numSides),
+				PolygonUtilities.calculateY(Constants.POLYGON_RADIUS
+						+ buffer_radius, numSides), numSides);
 
 		playerToSide = new ConcurrentHashMap<String, Integer>();
 
@@ -78,10 +79,12 @@ public class InternalPolygon extends java.awt.Polygon { // Extends awt polygon
 		sides.add(new InternalSide(xpoints[numSides - 1],
 				ypoints[numSides - 1], xpoints[0], ypoints[0], numSides - 1, ""));
 	}
-	
+
 	/**
 	 * Checks if the given point is within the this polygon's internal buffer
-	 * @param location the point to check
+	 * 
+	 * @param location
+	 *            the point to check
 	 * @return true if within buffer, else false.
 	 */
 	public boolean bufferContains(Point2D location) {

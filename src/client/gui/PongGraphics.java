@@ -45,9 +45,9 @@ public class PongGraphics {
 
 	private boolean started;
 
-	//Action Controller really only for one method, getPongState()
+	// Action Controller really only for one method, getPongState()
 	private ActionController ac;
-	
+
 	public PongGraphics(ActionController ac, StackPane world, Label winner,
 			GridPane livesGrid) {
 		// Setup the fields
@@ -228,8 +228,7 @@ public class PongGraphics {
 			}
 
 			// Rotate opposite side to the top
-			rotateSide = sideNum
-					+ sides.size() / 2;
+			rotateSide = sideNum + sides.size() / 2;
 
 			// Rotate mod for convenience
 			rotateSide %= sides.size();
@@ -275,7 +274,8 @@ public class PongGraphics {
 					double degAngle = Math.toDegrees(angle);
 
 					double cx = (l.x1 + l.x2) / 2;
-					double cy = -(l.y1 + l.y2) / 2; // Negative fix due to scaling
+					double cy = -(l.y1 + l.y2) / 2; // Negative fix due to
+													// scaling
 
 					// Shift out a little extra
 					cx += Math.signum(cx)
@@ -291,10 +291,13 @@ public class PongGraphics {
 					temp.appendRotation(-degAngle, cx, cy);
 					double totalAngle = degAngle + rotation;
 					if (totalAngle > 90 && totalAngle <= 270) {
-						temp.appendRotation(180, cx, cy); // Flip text for easier reading
+						temp.appendRotation(180, cx, cy); // Flip text for
+															// easier reading
 					}
-					if((totalAngle == 90 && cy > 0) || (totalAngle == 270 && cy < 0)){
-						temp.appendRotation(180, cx, cy); // Handles edge case for text flipping
+					if ((totalAngle == 90 && cy > 0)
+							|| (totalAngle == 270 && cy < 0)) {
+						temp.appendRotation(180, cx, cy); // Handles edge case
+															// for text flipping
 					}
 					gc.setTransform(temp);
 

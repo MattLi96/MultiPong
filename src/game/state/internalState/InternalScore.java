@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Matthew
  */
 public class InternalScore {
-	//Name to number of lives left
+	// Name to number of lives left
 	private ConcurrentHashMap<String, Integer> lives;
 	private volatile String winner;
 

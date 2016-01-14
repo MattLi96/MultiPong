@@ -11,7 +11,7 @@ package game.utilities;
 public class Constants {
 	// Pong Constant
 	public static final int DEFAULT_LIVES = 10;
-	
+
 	// Paddle constants
 	/**
 	 * The default width of a paddle as percent of the entire side length. Has
@@ -48,18 +48,18 @@ public class Constants {
 	 * Default ball speed.
 	 */
 	public static final int DEFAULT_MAX_SPEED = 80;
-	
+
 	/**
 	 * measured in units/sec^2
 	 */
 	public static final double DEFAULT_ACCELERATION = 10;
-	
+
 	/**
 	 * Slightly random adjustment on a bounce to keep it a bit interesting
 	 */
-	public static final double RANDOM_BOUNCE_ADJUSTMENT = Math.PI/12;
+	public static final double RANDOM_BOUNCE_ADJUSTMENT = Math.PI / 12;
 
-	//Polygon Constants
+	// Polygon Constants
 	/**
 	 * Default radius of the polygon
 	 */

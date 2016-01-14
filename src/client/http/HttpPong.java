@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 
 /**
  * An implementation of Pong that uses http requests to a Pong servlet.
+ * 
  * @author Matthew
  */
 public class HttpPong implements Pong {
