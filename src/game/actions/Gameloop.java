@@ -101,7 +101,7 @@ public class Gameloop implements Runnable {
 			if (!poly.bufferContains(ball.getLocation())) {
 				String loser = PolygonUtilities.closestPlayer(poly,
 						ball.getLocation());
-				
+
 				score.decreaseLife(loser, 1);
 
 				if (score.getLives(loser) <= 0) {

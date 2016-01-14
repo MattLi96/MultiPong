@@ -20,3 +20,5 @@ I have not created a runnable jar for the Servlet, you will need to setup the pr
 
 # Acknowledgment
 This project is based on code written at Winchester High School by the APCS class of 2010 and OCCS class of 2014.
+
+Additionally the graphics and servlet are based off of work done in CS 2112 at Cornell.

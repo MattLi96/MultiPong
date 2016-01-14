@@ -26,9 +26,10 @@ import bundle.response.StateResponse;
 
 import com.google.gson.Gson;
 
-// BufferedReader r = request.getReader();
-// gson.fromJson(r, EntityBundle.class);
-
+/**
+ * An implementation of Pong that uses http requests to a Pong servlet.
+ * @author Matthew
+ */
 public class HttpPong implements Pong {
 	private String url;
 	private Gson gson;

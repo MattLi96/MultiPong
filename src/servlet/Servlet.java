@@ -25,8 +25,7 @@ import bundle.response.StateResponse;
 import com.google.gson.Gson;
 
 /**
- * Main class for the servlet
- * 
+ * Main class for the servlet. Handles all the requests.
  * @author Matthew
  */
 @WebServlet("/")
